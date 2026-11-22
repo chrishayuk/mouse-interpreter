@@ -129,6 +129,23 @@ Programs from Grogono's article, transcribed from the printed listings:
 | `grogono-primes-endless.mouse` | Listing 2 as printed: primes for ever (not run by the tests) |
 | `grogono-squares-triangles.mouse` | Listing 1: two mutually recursive macros |
 
+## In the browser
+
+`web/` is a playground that runs the interpreter in a web page. The
+interpreter is compiled unchanged for WASI (`wasm32-wasip1`), and `web/wasi.js`
+is a small host that supplies standard input and output, so no other library
+is needed. Each run happens in a worker, which is how an endless program can
+be stopped.
+
+```bash
+node web/build.mjs                  # builds web/mouse.wasm and web/examples.json
+node web/test.mjs                   # runs every example through the wasm build
+python3 -m http.server -d web 8000  # then open http://localhost:8000
+```
+
+Add `?example=lane-test` to the address to open a particular example, and
+`&run` to run it straight away.
+
 ## Tutorial and dataset
 
 `tutorial/` is a 14-chapter tutorial, from hello world to macros and

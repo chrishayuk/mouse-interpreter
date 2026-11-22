@@ -1,0 +1,9 @@
+' Tom Lane's test, from "Comment and Correction for Mouse", BYTE, June 1980.
+' A sets its Q to 1, then runs its parameter, which calls B. B sets its own
+' Q to 33. Each macro has its own variables, so A should print 1. The
+' interpreter as published in 1979 prints 33.
+#A,#B;;
+
+$A Q 1 = %A Q. ! @
+$B Q 33 = @
+$$

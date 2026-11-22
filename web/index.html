@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mouse playground</title>
+<style>
+  :root { --bg: #f2f0eb; --fg: #0b0b0b; --rule: #b8b6b1; --accent: #b5651d; --err: #a3432f; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0b0b0b; --fg: #fafaf8; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font: 500 2.2rem/1.1 Georgia, serif; margin: 0 0 8px; }
+  p { max-width: 62ch; opacity: .8; margin: 0 0 24px; }
+  a { color: var(--accent); }
+  .bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 12px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  label { display: block; font: 12px ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; opacity: .6; margin-bottom: 4px; }
+  textarea, pre, select, button { font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: inherit; }
+  textarea, pre { width: 100%; margin: 0; padding: 12px; background: transparent; border: 1px solid var(--rule); border-radius: 0; }
+  textarea { resize: vertical; tab-size: 2; }
+  #program { height: 340px; }
+  #input { height: 64px; }
+  pre { height: 440px; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+  select, button { padding: 6px 12px; background: transparent; border: 1px solid var(--fg); cursor: pointer; }
+  button.primary { background: var(--fg); color: var(--bg); }
+  button:disabled { opacity: .35; cursor: default; }
+  .err { color: var(--err); }
+  #status { font: 12px ui-monospace, monospace; opacity: .6; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Mouse</h1>
+  <p>Peter Grogono's tiny language from BYTE, July 1979, running in your browser. The interpreter is the
+     same Rust program as the command line, compiled to WebAssembly.
+     <a href="https://github.com/chrishayuk/mouse-interpreter">Source and tutorial</a>.</p>
+  <div class="bar">
+    <select id="examples" aria-label="Example programs"></select>
+    <button id="run" class="primary">Run</button>
+    <button id="stop" disabled>Stop</button>
+    <span id="status"></span>
+  </div>
+  <div class="grid">
+    <div>
+      <label for="program">Program</label>
+      <textarea id="program" spellcheck="false" wrap="off"></textarea>
+      <label for="input" style="margin-top:12px">Input, read by ?</label>
+      <textarea id="input" spellcheck="false"></textarea>
+    </div>
+    <div>
+      <label for="output">Output</label>
+      <pre id="output" aria-live="polite"></pre>
+    </div>
+  </div>
+</main>
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const examples = await (await fetch("examples.json")).json();
+let worker = null;
+
+for (const example of examples) $("examples").add(new Option(example.name, example.name));
+function load(name) {
+  const example = examples.find((e) => e.name === name) ?? examples[0];
+  $("examples").value = example.name;
+  $("program").value = example.program;
+  $("input").value = example.input;
+  $("output").textContent = "";
+  $("status").textContent = example.endless ? "this one never stops: use Stop" : "";
+}
+load(new URLSearchParams(location.search).get("example"));
+$("examples").onchange = () => load($("examples").value);
+
+function finish(message) {
+  worker?.terminate();
+  worker = null;
+  $("run").disabled = false;
+  $("stop").disabled = true;
+  $("status").textContent = message;
+}
+function append(text, isError) {
+  const span = document.createElement("span");
+  if (isError) span.className = "err";
+  span.textContent = text;
+  $("output").append(span);
+  $("output").scrollTop = $("output").scrollHeight;
+}
+$("run").onclick = () => {
+  $("output").textContent = "";
+  $("run").disabled = true;
+  $("stop").disabled = false;
+  $("status").textContent = "running";
+  const started = performance.now();
+  worker = new Worker("worker.js", { type: "module" });
+  worker.onmessage = ({ data }) => {
+    if (data.type === "out") append(data.text, data.fd === 2);
+    else if (data.type === "error") { append("\n" + data.message, true); finish("stopped"); }
+    else finish(`finished in ${Math.round(performance.now() - started)} ms` + (data.code ? `, exit ${data.code}` : ""));
+  };
+  worker.onerror = (event) => { append("\n" + event.message, true); finish("failed"); };
+  worker.postMessage({ wasmUrl: new URL("mouse.wasm", location.href).href, program: $("program").value, input: $("input").value });
+};
+$("stop").onclick = () => finish("stopped");
+if (new URLSearchParams(location.search).has("run")) $("run").click();
+$("program").addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) $("run").click();
+});
+</script>
+</body>
+</html>
