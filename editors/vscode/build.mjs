@@ -12,7 +12,7 @@ const release = `${root}target/wasm32-wasip1/release`;
 
 execSync("cargo build --release --target wasm32-wasip1 -p mouse-interpreter -p mouse-lsp", { cwd: root, stdio: "inherit" });
 copyFileSync(`${release}/mouse-lsp.wasm`, `${here}server/mouse-lsp.wasm`);
-copyFileSync(`${release}/mouse-interpreter.wasm`, `${here}server/mouse.wasm`);
+copyFileSync(`${release}/mouse.wasm`, `${here}server/mouse.wasm`);
 
 await build({
   entryPoints: [`${here}src/extension.js`],

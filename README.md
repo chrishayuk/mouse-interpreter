@@ -17,10 +17,10 @@ language server from this repository:
 cargo install --git https://github.com/chrishayuk/mouse-interpreter mouse-interpreter mouse-lsp
 ```
 
-That puts `mouse-interpreter` and `mouse-lsp` in `~/.cargo/bin`. Then:
+That puts `mouse` and `mouse-lsp` in `~/.cargo/bin`. Then:
 
 ```bash
-echo '"Hello, world!" $$' | mouse-interpreter
+echo '"Hello, world!" $$' | mouse
 ```
 
 For Visual Studio Code, build and install the extension. It needs
@@ -50,14 +50,14 @@ To work on the interpreter itself, clone the repository and:
 
 ```bash
 cargo build --release
-target/release/mouse-interpreter examples/hello.mouse
+target/release/mouse examples/hello.mouse
 ```
 
 With no file name the program is read from standard input, up to its `$$`.
 Anything after the `$$` is the program's own input:
 
 ```bash
-echo '"n? " ? 2 * ! "!" $$ 21' | target/release/mouse-interpreter
+echo '"n? " ? 2 * ! "!" $$ 21' | target/release/mouse
 ```
 
 An error stops the program with a message and exit status 1.
@@ -186,12 +186,12 @@ Add `?example=lane-test` to the address to open a particular example, and
 
 ## In your editor
 
-`mouse-interpreter --check program.mouse` reads a program without running it and reports
+`mouse --check program.mouse` reads a program without running it and reports
 what is wrong: unbalanced brackets and loops, calls with no closing `;`,
 macros that are called but not defined, text the interpreter would ignore.
 
 ```bash
-mouse-interpreter --check examples/*.mouse
+mouse --check examples/*.mouse
 ```
 
 The same analysis drives a language server, `mouse-lsp` in `lsp/`, with

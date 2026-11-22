@@ -28,7 +28,7 @@ fn examples_print_their_expected_output() {
             .unwrap_or_else(|_| panic!("{name}.mouse has no {name}.out"));
         let input = fs::read(program.with_extension("in")).unwrap_or_default();
 
-        let mut child = Command::new(env!("CARGO_BIN_EXE_mouse-interpreter"))
+        let mut child = Command::new(env!("CARGO_BIN_EXE_mouse"))
             .arg(program)
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
@@ -65,7 +65,7 @@ fn examples_pass_the_static_check() {
     programs.sort();
     assert!(programs.len() >= 40);
 
-    let output = Command::new(env!("CARGO_BIN_EXE_mouse-interpreter"))
+    let output = Command::new(env!("CARGO_BIN_EXE_mouse"))
         .arg("--check")
         .args(&programs)
         .output()

@@ -28,18 +28,18 @@ Build the interpreter with Cargo, from the top folder of this repository:
 cargo build --release
 ```
 
-The program is then at `target/release/mouse-interpreter`. Give it the name of
+The program is then at `target/release/mouse`. Give it the name of
 a file containing a Mouse program:
 
 ```bash
-target/release/mouse-interpreter examples/hello.mouse
+target/release/mouse examples/hello.mouse
 ```
 
 With no file name, the interpreter reads the program from the keyboard. Type
 the program, ending with `$$`, and press Enter:
 
 ```bash
-target/release/mouse-interpreter
+target/release/mouse
 "Hello, world!"$$
 Hello, world
 ```

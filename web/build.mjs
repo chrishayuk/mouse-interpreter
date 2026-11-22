@@ -6,7 +6,7 @@ import { copyFileSync, existsSync, readFileSync, readdirSync, writeFileSync } fr
 
 const root = new URL("..", import.meta.url).pathname;
 execSync("cargo build --release --target wasm32-wasip1", { cwd: root, stdio: "inherit" });
-copyFileSync(`${root}target/wasm32-wasip1/release/mouse-interpreter.wasm`, `${root}web/mouse.wasm`);
+copyFileSync(`${root}target/wasm32-wasip1/release/mouse.wasm`, `${root}web/mouse.wasm`);
 
 // Shown first, in this order; the rest follow alphabetically.
 const first = ["hello", "arithmetic", "variables", "countdown", "conditions", "fibonacci",

@@ -5,6 +5,11 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+# The program is called `mouse`.
+[[bin]]
+name = "mouse"
+path = "src/main.rs"
+
 [dependencies]
 
 # The language server has its own crate so that the interpreter keeps no

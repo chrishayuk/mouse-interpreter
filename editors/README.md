@@ -5,7 +5,7 @@ Two pieces give an editor an understanding of Mouse:
 - **`mouse-lsp`**, a language server in [`../lsp`](../lsp). It works with any editor that speaks the Language Server Protocol.
 - **A Visual Studio Code extension** in [`vscode`](vscode), which bundles the server and adds syntax highlighting and a run button. Its [README](vscode/README.md) lists the features.
 
-Both are built on [`src/analysis.rs`](../src/analysis.rs), the same code behind `mouse-interpreter --check`.
+Both are built on [`src/analysis.rs`](../src/analysis.rs), the same code behind `mouse --check`.
 
 ## The language server
 
@@ -49,7 +49,7 @@ These two configurations follow each editor's documented format but have not bee
 ## Checking a program from the command line
 
 ```sh
-mouse-interpreter --check program.mouse
+mouse --check program.mouse
 ```
 
 prints one line per problem, as `file:line:column: severity: message`, and exits with status 1 if any is an error.

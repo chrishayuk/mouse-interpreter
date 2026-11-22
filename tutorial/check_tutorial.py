@@ -24,7 +24,7 @@ def interpreter():
     if os.environ.get("MOUSE"):
         return os.environ["MOUSE"]
     for build in ("release", "debug"):
-        path = HERE.parent / "target" / build / "mouse-interpreter"
+        path = HERE.parent / "target" / build / "mouse"
         if path.exists():
             return str(path)
     sys.exit("no interpreter found: run `cargo build` or set $MOUSE")
