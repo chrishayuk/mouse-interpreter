@@ -109,8 +109,9 @@ everywhere.
 ## Comments
 
 An apostrophe `'` outside a string starts a comment, which runs to the end of
-the line. Comments are a feature of this interpreter and of the C version it
-was ported from; the language in the 1979 article had none.
+the line. Comments are a feature of this interpreter. The interpreter in the
+1979 article has none, though the article suggests adding them in just this
+way: an apostrophe, or a pair of braces, that the loader leaves out (p. 220).
 
 ```mouse
 ' This program greets the world.

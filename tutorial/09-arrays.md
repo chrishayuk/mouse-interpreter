@@ -70,9 +70,32 @@ to be used as one large array.
 
 ## Reading into an array
 
-This program is from Grogono's article. It reads numbers into an array until
-it is given a negative one, then prints them in reverse order. A is the index
-and the array starts at B.
+This program is from Grogono's article (p. 204). It reads numbers into an
+array until it is given a negative one, then prints them in reverse order. A
+is the index and the array starts at B.
+
+The article prints the first loop as `( BA.+.?= BA.+.1+↑ AA.1+= )`. The
+period after `+` is a slip: it fetches the value of element A (zero) instead
+of keeping its address, so the number is stored at address 0, which is not a
+variable. Here is the program as printed, with `^` for the up arrow:
+
+```mouse
+A0=
+( BA.+.?= BA.+.1+^ AA.1+= )
+( A.^ AA.1-= BA.+.! )
+$$
+```
+
+```input
+3 1 4 1 5 9 -1
+```
+
+```output
+mouse: error: invalid variable address 0 (program offset 10)
+```
+
+Without that period, and with `" "` added between the numbers and a final
+new line, it works:
 
 ```mouse
 A 0 =
@@ -98,8 +121,10 @@ The first loop stores each number in element A, leaves the loop if that
 number is negative, and otherwise moves A on by one. The second loop steps A
 back down, printing as it goes.
 
-The article improves it so that it cannot read more than 25 numbers, which is
-all the array can hold. The first loop gains a second exit:
+The article then improves it "so that it will read no more than 25 numbers,
+the maximum capacity of the array B", with a second exit from the first
+loop. With the period mended and the same spacing added, it reads like
+this, and the test is `A. 25 -` as printed:
 
 ```mouse
 A 0 =
@@ -115,12 +140,43 @@ $$
 ```
 
 ```input
-10 20 30 -1
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27
 ```
 
 ```output
-30 20 10 
+ARRAY FULL
+26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 
 ```
+
+That is a second slip in the article. A is increased to 25 after the 25th
+number, and `25 25 -` is 0, so the loop goes round once more and stores a
+26th number at B + 25, address 27, past Z. The test should be `A. 24 -`:
+
+```mouse
+A 0 =
+( B A. + ? =
+  B A. + . 1 + ^
+  A A. 1 + =
+  A. 24 - [ "ARRAY FULL!" 0 ^ ] )
+( A. ^
+  A A. 1 - =
+  B A. + . ! " " )
+"!"
+$$
+```
+
+```input
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27
+```
+
+```output
+ARRAY FULL
+25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 
+```
+
+An off-by-one like this is easy to make in Mouse, where every comparison is
+built from a subtraction: work out by hand what the variable holds the first
+time the test should succeed.
 
 ## Summary
 

@@ -71,6 +71,6 @@ is only found when the interpreter reaches it.
 
 The `examples` folder contains over 40 programs, from
 "hello world" to a bubble sort, including all five listings from Grogono's
-article. Each one has a `.out` file showing what it prints, and a `.in` file
+article, transcribed as printed. Each one has a `.out` file showing what it prints, and a `.in` file
 if it needs input. Every program shown in this tutorial has been run, and the
 output shown is what the interpreter printed.

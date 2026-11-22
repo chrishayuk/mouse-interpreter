@@ -115,7 +115,9 @@ carries on from where the last one stopped.
 
 ## The Towers of Hanoi
 
-This is listing 4 of Grogono's article. To move a pile of disks from one peg
+This is listing 4 of Grogono's article, with the title left out, a space
+after the prompt and a new line after it; `grogono-hanoi.mouse` has it as
+printed. To move a pile of disks from one peg
 to another, move all but the largest to the spare peg, move the largest, then
 move the rest on top of it.
 
@@ -149,7 +151,9 @@ hardest thing the interpreter has to do.
 ## Bubble sort
 
 Listing 5 of the article is its most elaborate program. It reads an array,
-prints it, sorts it and prints it again.
+prints it, sorts it and prints it again. Here it has a space after the
+prompt and a new line before `ENTER`; `grogono-bubble-sort.mouse` has it as
+printed.
 
 ```mouse
 "BUBBLE SORT!" #P,A;
@@ -199,6 +203,10 @@ Things to notice:
 - In B, the body of the outer FOR is another FOR, whose body is a condition
   containing a call to E. Each is an actual parameter, which is why the
   definition of B ends with `; ; @`.
+- The listing has a slip: asked for one number, it fails. B's outer FOR
+  then runs from 1 to 0, and F counts *down* when its start is past its end,
+  so the inner FOR compares element -1, at address 0. Guarding the call with
+  `N. [ #B,%A,0,N.; ]` fixes it; see `grogono-bubble-sort-corrected.mouse`.
 
 ## More programs to read
 

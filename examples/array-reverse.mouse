@@ -1,7 +1,7 @@
 ' Any letter can be used as an array: the address B + I is element I.
 ' Read numbers until a negative one, then print them backwards.
 ' This is Grogono's program (BYTE, July 1979, p. 204), with its limit check,
-' two corrections and some spacing in the output:
+' two corrections, a prompt and spaces between the numbers it prints:
 '   - the article reads with "B A. + . ? =", one period too many, which
 '     stores at address 0 instead of in the array (a slip); it is
 '     "B A. + ? =" here;

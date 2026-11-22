@@ -25,7 +25,9 @@ $$
 ## By value and by reference
 
 A parameter can be a value or an address, and the macro must be written to
-expect one or the other. This is the example from Grogono's article:
+expect one or the other. This is the example from Grogono's article (p. 205),
+which prints `351` as `#P,3; A5= #P,A.; #P,A;`. Here A is set first and
+`" "` separates the numbers:
 
 ```mouse
 A 5 =

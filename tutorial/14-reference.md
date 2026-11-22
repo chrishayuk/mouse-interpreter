@@ -52,46 +52,60 @@ parameter must be a complete clause: a `[` must have its `]`, and a `(` its
 ## Where this interpreter follows the article
 
 The interpreter was checked against the Pascal program printed as listing 6
-of the article, and it includes the four corrections made by Tom Lane in
-"Comment and Correction for Mouse", BYTE, June 1980, which Grogono accepted
-in his reply:
+of the article. It includes the corrections made by Tom Lane in "Comment and
+Correction for Mouse", BYTE, June 1980, which Grogono accepted in his reply.
+All of them are slips in the printed listing:
 
-1. When looking for the call that a `%` belongs to, a parameter frame on the
+1. Line 42 was printed `CAL := CAL = 1` instead of `CAL := CAL - 1`.
+2. When looking for the call that a `%` belongs to, a parameter frame on the
    stack must be *added* to the count, not subtracted. The printed listing had
    a minus sign on line 176.
-2. Skipping over a condition, loop or call ignores brackets that are inside
+3. Skipping over a condition, loop or call ignores brackets that are inside
    quoted strings.
-3. Finding an actual parameter ignores commas and semicolons inside quoted
+4. Finding an actual parameter ignores commas and semicolons inside quoted
    strings, and copes with two macro calls next to each other in an earlier
    parameter.
-4. A macro called while an actual parameter is being run gets its own local
+5. A macro called while an actual parameter is being run gets its own local
    variables instead of sharing those of the macro that is waiting for the
    parameter.
 
 Grogono's reply also corrected one program in the article: the factorial
 function on page 205 should read `$F N %A = 1 ( N. ^ N. * N N. 1 - = ) @`.
 
-All five listings from the article are in the examples folder and run
-correctly. They were lightly adapted when typed in: `^` for the printed up
-arrow, comment lines, and some spacing and new lines added to the prompts.
+All five listings from the article are in the examples folder, transcribed
+as printed: `^` for the printed up arrow, straight quotes, spacing outside
+strings and comment lines are the only changes. Four run as the article
+describes. Listing 5, the bubble sort, has a slip: it fails when asked for
+fewer than two numbers. It is kept as printed, and
+`grogono-bubble-sort-corrected.mouse` fixes it. The array programs on p. 204
+have two slips of their own, described in chapter 9.
 
 ## Where this interpreter goes further
 
-| Feature | Article | This interpreter |
-|---------|---------|------------------|
-| Comments | None | `'` outside a string starts a comment that runs to the end of the line |
-| Line break inside a string | Up to the Pascal system; normally a space | Printed as a line break |
-| Program without `$$` | Never finishes loading | Runs when the file ends |
-| Program size | 500 characters | No limit |
-| Depth of loops, calls and parameters | 20 | 100,000 |
-| Calculation stack | 20 values | No limit |
-| Variables | 260, enough for 9 nested macro calls | No limit |
-| `@` inside a loop in a macro | Goes wrong | Returns from the macro |
-| Errors | Not checked | Reported, with the position in the program |
-| Lower-case letters and unknown symbols | Not allowed | Ignored |
+Each difference is labelled: *conflict* where the article says two things and
+listing 6 follows the other, *ours* where it is a choice made for this
+interpreter.
 
-A program that stays inside the article's limits and avoids comments and line
-breaks inside strings will behave the same on both.
+| Feature | Article | This interpreter | Kind |
+|---------|---------|------------------|------|
+| `@` inside a loop in a macro | Described as a return (p. 205), but listing 6 only leaves the loop | Returns from the macro | conflict |
+| Comments | None in listing 6; p. 220 suggests `'` or braces, left out by the loader | `'` outside a string starts a comment that runs to the end of the line | ours |
+| `$` inside a string | The loader takes `$X` as a definition and `$$` as the end of the program, even inside a string | Ignored inside strings | ours |
+| Line break inside a string | Up to the Pascal system; normally a space | Printed as a line break | ours |
+| Program without `$$` | Never finishes loading | Runs when the file ends | ours |
+| Program size | 500 characters | No limit | ours |
+| Depth of loops, calls and parameters | 20 | 100,000 | ours |
+| Calculation stack | 20 values | No limit | ours |
+| Variables | 260, enough for 9 nested macro calls | No limit | ours |
+| Errors | Not checked by listing 6; p. 218 lists checks to add | Reported, with the position in the program | ours |
+| Lower-case letters and unknown symbols | Not allowed | Ignored | ours |
+
+Errors are found as the program runs. A bracket that execution never has to
+match, as in `1 [ $$`, is not reported; `mouse --check` finds it.
+
+A program that stays inside the article's limits and avoids comments, line
+breaks and `$` inside strings, `@` inside loops and arithmetic overflow
+should behave the same on both.
 
 ## Error messages
 
@@ -121,7 +135,10 @@ Grogono revised the language in his 1983 book, *Mouse: A Language for
 Microcomputers* (Petrocelli Books). Programs written for that version, and
 for later interpreters based on it, use different symbols. This tutorial and
 interpreter do not implement them, but the differences are worth knowing when
-reading other people's programs.
+reading other people's programs. The table describes the later dialect as
+later interpreters use it; it has not been checked against a copy of the
+book, and only the change to numbered parameters is attested by the sources
+used here (Grogono's 1980 reply).
 
 | | 1979 (this tutorial) | 1983 and later |
 |---|---|---|

@@ -85,29 +85,75 @@ A full tutorial is in [`tutorial/`](tutorial/01-introduction.md).
 
 The interpreter follows the Pascal program printed as listing 6 of
 "Mouse: A Language for Microcomputers" (BYTE, July 1979, pp. 198-220) and was
-checked against scans of the article. It includes the four corrections from
-Tom Lane's "Comment and Correction for Mouse" (BYTE, June 1980), which
-Grogono accepted:
+checked against scans of the article (in [`docs/scans`](docs/scans/README.md)).
+Where it differs from the listing, the difference is one of four kinds:
 
-1. A parameter frame increments the balance count when searching for the
-   call that a `%` belongs to. Line 176 of the listing was misprinted with a
-   minus sign.
-2. Skipping a condition, loop or call ignores brackets inside quoted strings.
-3. Finding an actual parameter ignores quoted strings and handles adjacent
+- **slip**: the printed text is wrong under any reading of the sources;
+- **conflict**: the sources say two things, and the listing follows the other;
+- **interpretation**: our reading of what was meant;
+- **ours**: a choice made for this reconstruction.
+
+### Corrections from Tom Lane, accepted by Grogono
+
+Tom Lane's "Comment and Correction for Mouse" (BYTE, June 1980, pp. 238 and
+240) corrects one typographical error and four faults in the logic, and
+Grogono's reply accepts them all. All are slips, and all are applied:
+
+1. Line 42 was printed `CAL := CAL = 1`, a syntax error, for
+   `CAL := CAL - 1`. (The calculation stack here is a Rust `Vec`, so there is
+   no line to correct; popping simply works.)
+2. A parameter frame increments the balance count when searching for the
+   call that a `%` belongs to. Line 176 was printed with a minus sign.
+3. Skipping a condition, loop or call ignores brackets inside quoted strings.
+4. Finding an actual parameter ignores quoted strings and handles adjacent
    macro calls in an earlier parameter.
-4. Local variables are allocated from a separate high-water mark, so a macro
+5. Local variables are allocated from a separate high-water mark, so a macro
    called from inside an actual parameter does not share variables with the
-   macro waiting for that parameter.
+   macro waiting for that parameter. With the printed listing (once line 42
+   is mended), Lane's test prints 33; here it prints 1.
 
-It goes beyond the article in these ways:
+Grogono's reply also corrects a program in the text: the factorial function
+on p. 205 lacks the `=` after `N N. 1 -` (a slip).
 
-- `'` outside a string starts a comment that runs to the end of the line.
-- A line break inside a string is printed as a line break.
-- A program with no `$$` runs when its input ends.
-- There are no fixed sizes for the program, the stacks or the variables.
-- `@` inside a loop returns from the macro.
-- Stack underflow, division by zero, bad addresses, unbalanced brackets and
-  bad input are reported instead of being left undefined.
+### Other differences from listing 6
+
+| Behaviour | Listing 6 | Here | Kind |
+|-----------|-----------|------|------|
+| `@` inside a loop in a macro | Pops only the loop frame (line 166) | Returns from the macro, abandoning the loops | conflict: p. 205 says `@` acts like RETURN |
+| Comments | None; p. 220 suggests `'` or braces, dropped by the loader | `'` outside a string starts a comment to the end of the line | ours, following p. 220 |
+| `$` inside a string while loading | `$X` in a string is taken as a definition, and `$$` in a string ends the program (lines 79-83) | Ignored inside strings | ours |
+| Line break inside a string | Up to the Pascal system | Printed as a line break | ours |
+| Program with no `$$` | Never finishes loading | Runs when the input ends | ours |
+| Sizes | 500 characters of program, 20 stack entries, 260 variables | No limit on program, calculation stack or variables; at most 100,000 nested loops, calls and parameters | ours |
+| Errors | Not checked; p. 218 lists checks an implementation should add | Stack underflow, division by zero, bad addresses, a `#` or `%` without a letter, running off the end of the program, and bad input stop the program with a message | ours, following p. 218 |
+
+Running does not check the structure of a program in advance, any more than
+listing 6 did: an unclosed `[` or `(` that execution never needs to close
+goes unnoticed, as in `1 [ $$`. `mouse --check` (below) finds those.
+
+A program that stays inside the article's limits and avoids comments, line
+breaks inside strings, `$` inside strings, `@` inside loops and arithmetic
+overflow should behave
+the same here as on listing 6 with Lane's corrections.
+
+### The article's own programs
+
+The programs from the article are in `examples/` as printed: the only changes
+are `^` for the printed up arrow, straight quotes, spacing outside strings and
+comment lines. Two contain slips, left in place and described in the file:
+
+- Listing 5, the bubble sort (p. 208), fails when asked for one number or
+  none, because its FOR macro counts down over an empty range and the sort
+  then reads address 0. `grogono-bubble-sort-corrected.mouse` adds two lines
+  to fix it.
+- The array programs on p. 204 read with `BA.+.?=`, one period too many, so
+  the first number is stored at address 0; and the "no more than 25 numbers"
+  bound `A.25-` admits a 26th. `array-reverse.mouse` and chapter 9 of the
+  tutorial correct both and say so.
+
+In Listing 3, `$W "STANDING ON THE WALL"` has no leading space, so the song
+prints `BOTTLESSTANDING`; that is presumably unintended (an interpretation),
+but it is left as printed.
 
 The later dialect from Grogono's 1983 book (`:` to store, `<` `=` `>`, `\`,
 `1%` parameters) is not implemented.
@@ -121,7 +167,7 @@ a `.in` file if it reads input. `cargo test` runs them all.
 |---------|---|
 | `ackermann.mouse` | Ackermann's function |
 | `arithmetic.mouse` | Postfix arithmetic |
-| `array-reverse.mouse` | Any letter can be used as an array |
+| `array-reverse.mouse` | Any letter can be used as an array (the article's p. 204 program, corrected) |
 | `binary.mouse` | Print numbers in binary with a recursive macro |
 | `call-by-name.mouse` | Parameters are run again on every use |
 | `change.mouse` | Make change with the fewest coins |
@@ -154,22 +200,23 @@ a `.in` file if it reads input. `cargo test` runs them all.
 | `triangle.mouse` | A triangle of stars |
 | `variables.mouse` | A letter pushes the ADDRESS of a variable |
 
-Programs from Grogono's article, transcribed from the printed listings:
+Programs from Grogono's article, transcribed as printed (see above):
 
 | Program | |
 |---------|---|
-| `grogono-bubble-sort.mouse` | Listing 5: read, print, sort and print an array |
+| `grogono-bubble-sort.mouse` | Listing 5: read, print, sort and print an array (fails for fewer than two numbers, as printed) |
+| `grogono-bubble-sort-corrected.mouse` | Listing 5 with that slip corrected |
 | `grogono-factorial.mouse` | Factorials in a loop, from the text of the article |
 | `grogono-green-bottles.mouse` | Listing 3: a song from a recursive macro |
 | `grogono-hanoi.mouse` | Listing 4: the Towers of Hanoi |
 | `grogono-parameters.mouse` | Missing and extra parameters, and an undefined macro |
-| `grogono-primes-endless.mouse` | Listing 2 as printed: primes for ever (not run by the tests) |
+| `grogono-primes-endless.mouse` | Listing 2: primes for ever (not run by the tests) |
 | `grogono-squares-triangles.mouse` | Listing 1: two mutually recursive macros |
 
 ## In the browser
 
 `web/` is a playground that runs the interpreter in a web page. The
-interpreter is compiled unchanged for WASI (`wasm32-wasip1`), and `web/wasi.js`
+interpreter is compiled from the same source for WASI (`wasm32-wasip1`), and `web/wasi.js`
 is a small host that supplies standard input and output, so no other library
 is needed. Each run happens in a worker, which is how an endless program can
 be stopped.

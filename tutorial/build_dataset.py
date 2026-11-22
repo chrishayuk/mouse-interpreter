@@ -99,8 +99,9 @@ qa("Are spaces significant in Mouse?",
    "`#`, `$` or `%` and the letter that follows it.\n\n" + prog('5 7 ! " " ! $$'))
 
 qa("How do I write a comment in Mouse?",
-   "The language in Grogono's 1979 article has no comments. Many interpreters add "
-   "them: in this interpreter an apostrophe outside a string starts a comment that "
+   "The interpreter in Grogono's 1979 article has no comments, though the article "
+   "suggests adding them as an apostrophe or a pair of braces that the loader leaves "
+   "out. In this interpreter an apostrophe outside a string starts a comment that "
    "runs to the end of the line.\n\n"
    + prog("' Greet the world.\n\"hello world!\"    ' the ! prints a new line\n$$") +
    "\n\nLater versions of Mouse use `~` for comments instead.")
@@ -331,8 +332,8 @@ qa("What is the difference between the 1979 and 1983 versions of Mouse?",
 
 qa("Were there any bugs in the original Mouse interpreter?",
    "Yes. In BYTE, June 1980, Tom Lane published \"Comment and Correction for "
-   "Mouse\", and Grogono accepted all his points. There was a misprint in the "
-   "parameter search (a minus sign that should have been a plus); skipping a "
+   "Mouse\", and Grogono accepted all his points. Line 42 of the listing had a "
+   "typographical error, and there was a misprint in the parameter search (a minus sign that should have been a plus); skipping a "
    "condition or loop was confused by brackets inside quoted strings; finding an "
    "actual parameter was confused by strings and by two macro calls next to each "
    "other; and a macro called while a parameter was being evaluated shared local "
@@ -379,7 +380,7 @@ TASKS = {
     "statistics": "Write a Mouse program that prints statistics for a list of numbers.",
     "ackermann": "Write Ackermann's function in Mouse.",
     "grogono-hanoi": "Write the Towers of Hanoi in Mouse.",
-    "grogono-bubble-sort": "Write a bubble sort in Mouse.",
+    "grogono-bubble-sort-corrected": "Write a bubble sort in Mouse.",
     "grogono-green-bottles": "Write a Mouse program that prints the Green Bottles song.",
     "grogono-squares-triangles": "Show me an example of mutual recursion in Mouse.",
 }
