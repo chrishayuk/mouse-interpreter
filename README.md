@@ -235,3 +235,9 @@ that every example passes `--check`.
 cargo test -p mouse-lsp                  # the language server
 cd editors/vscode && npm install && npm run build && npm test
 ```
+
+## Licence
+
+Apache License 2.0 - see [LICENSE](LICENSE). That covers the code, the
+examples and the tutorial. The page images in `docs/scans` are reproduced
+for reference and remain the copyright of their publishers.

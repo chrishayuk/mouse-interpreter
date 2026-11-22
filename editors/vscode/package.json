@@ -4,6 +4,7 @@
   "description": "Syntax highlighting, a language server and a run button for Mouse, Peter Grogono's 1979 programming language.",
   "version": "0.1.1",
   "publisher": "chrishayuk",
+  "license": "Apache-2.0",
   "private": true,
   "repository": { "type": "git", "url": "https://github.com/chrishayuk/mouse-interpreter" },
   "engines": { "vscode": "^1.85.0" },
