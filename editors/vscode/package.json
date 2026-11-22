@@ -2,7 +2,7 @@
   "name": "mouse-language",
   "displayName": "Mouse",
   "description": "Syntax highlighting, a language server and a run button for Mouse, Peter Grogono's 1979 programming language.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "chrishayuk",
   "private": true,
   "repository": { "type": "git", "url": "https://github.com/chrishayuk/mouse-interpreter" },

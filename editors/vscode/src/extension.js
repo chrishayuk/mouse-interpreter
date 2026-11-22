@@ -68,6 +68,8 @@ async function runProgram(context) {
     panel: vscode.TaskPanelKind.Dedicated,
     focus: true,
     clear: true,
+    // Without this the terminal first prints the whole command line.
+    echo: false,
     showReuseMessage: false,
   };
   await vscode.tasks.executeTask(task);
