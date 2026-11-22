@@ -1,0 +1,74 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Mouse",
+  "scopeName": "source.mouse",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#string" },
+    { "include": "#end" },
+    { "include": "#definition" },
+    { "include": "#call" },
+    { "include": "#parameter" },
+    { "include": "#number" },
+    { "include": "#variable" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comment": {
+      "name": "comment.line.apostrophe.mouse",
+      "match": "(').*$",
+      "captures": { "1": { "name": "punctuation.definition.comment.mouse" } }
+    },
+    "string": {
+      "name": "string.quoted.double.mouse",
+      "begin": "\"",
+      "end": "\"",
+      "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.mouse" } },
+      "endCaptures": { "0": { "name": "punctuation.definition.string.end.mouse" } },
+      "patterns": [{ "name": "constant.character.escape.newline.mouse", "match": "!" }]
+    },
+    "end": {
+      "begin": "\\$\\$",
+      "end": "(?!)",
+      "beginCaptures": { "0": { "name": "keyword.control.end.mouse" } },
+      "contentName": "comment.block.after-end.mouse"
+    },
+    "definition": {
+      "match": "(\\$)([A-Z])",
+      "captures": {
+        "1": { "name": "storage.type.function.mouse" },
+        "2": { "name": "entity.name.function.mouse" }
+      }
+    },
+    "call": {
+      "match": "(#)\\s*([A-Z])",
+      "captures": {
+        "1": { "name": "keyword.operator.call.mouse" },
+        "2": { "name": "entity.name.function.mouse" }
+      }
+    },
+    "parameter": {
+      "match": "(%)\\s*([A-Z])",
+      "captures": {
+        "1": { "name": "punctuation.definition.variable.mouse" },
+        "2": { "name": "variable.parameter.mouse" }
+      }
+    },
+    "number": { "name": "constant.numeric.integer.mouse", "match": "[0-9]+" },
+    "variable": { "name": "variable.other.mouse", "match": "[A-Z]" },
+    "operators": {
+      "patterns": [
+        { "name": "keyword.control.conditional.mouse", "match": "[\\[\\]]" },
+        { "name": "keyword.control.loop.mouse", "match": "[()^]" },
+        { "name": "keyword.control.return.mouse", "match": "@" },
+        { "name": "keyword.operator.arithmetic.mouse", "match": "[-+*/]" },
+        { "name": "keyword.operator.assignment.mouse", "match": "=" },
+        { "name": "keyword.operator.fetch.mouse", "match": "\\." },
+        { "name": "support.function.io.mouse", "match": "[!?]" },
+        { "name": "punctuation.separator.arguments.mouse", "match": "," },
+        { "name": "punctuation.terminator.call.mouse", "match": ";" },
+        { "name": "invalid.illegal.lone-dollar.mouse", "match": "\\$" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+**
+!package.json
+!README.md
+!CHANGELOG.md
+!language-configuration.json
+!syntaxes/**
+!dist/extension.js
+!server/*.js
+!server/*.wasm

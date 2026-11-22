@@ -51,3 +51,29 @@ fn examples_print_their_expected_output() {
     assert!(failures.is_empty(), "{}", failures.join("\n"));
     assert!(checked >= 40, "only {checked} examples were found");
 }
+
+/// `mouse --check` reads a program without running it. No example may have
+/// an error, and the only warnings are the two that are deliberate.
+#[test]
+fn examples_pass_the_static_check() {
+    let dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("examples");
+    let mut programs: Vec<_> = fs::read_dir(&dir)
+        .unwrap()
+        .map(|entry| entry.unwrap().path())
+        .filter(|path| path.extension().is_some_and(|ext| ext == "mouse"))
+        .collect();
+    programs.sort();
+    assert!(programs.len() >= 40);
+
+    let output = Command::new(env!("CARGO_BIN_EXE_mouse-interpreter"))
+        .arg("--check")
+        .args(&programs)
+        .output()
+        .unwrap();
+    let report = String::from_utf8_lossy(&output.stdout);
+    assert!(output.status.success(), "{report}");
+    let lines: Vec<&str> = report.lines().collect();
+    assert_eq!(lines.len(), 2, "{report}");
+    assert!(lines[0].contains("grogono-parameters.mouse") && lines[0].contains("$U is not defined"));
+    assert!(lines[1].contains("grogono-primes-endless.mouse") && lines[1].contains("never ends"));
+}

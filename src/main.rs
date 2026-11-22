@@ -17,6 +17,8 @@
 //! See README.md for the places where this interpreter goes beyond the
 //! article (comments, error reporting, no fixed array sizes).
 
+mod analysis;
+
 use std::collections::VecDeque;
 use std::env;
 use std::fmt;
@@ -460,8 +462,38 @@ impl Mouse {
     }
 }
 
+/// `mouse --check FILE...`: report mistakes without running anything.
+/// Returns false if any file has an error.
+fn check_files(paths: &[String]) -> io::Result<bool> {
+    let mut ok = true;
+    for path in paths {
+        // Read through `take` so that the WASI build needs no file metadata
+        // call, which the browser's small WASI host does not provide.
+        let mut source = String::new();
+        File::open(path)
+            .and_then(|file| file.take(u64::MAX).read_to_string(&mut source))
+            .map_err(|e| io::Error::new(e.kind(), format!("cannot read {path}: {e}")))?;
+        let result = analysis::analyse(&source);
+        for d in &result.diagnostics {
+            let (line, column) = analysis::line_column(&source, d.start);
+            println!("{path}:{line}:{column}: {}: {}", d.severity.name(), d.message);
+        }
+        ok &= !result.has_errors();
+    }
+    Ok(ok)
+}
+
 fn run_cli() -> Result<()> {
     let args: Vec<String> = env::args().collect();
+    if args.get(1).map(String::as_str) == Some("--check") {
+        if args.len() < 3 {
+            return Err(MouseError::Io(io::Error::other("usage: mouse --check FILE...")));
+        }
+        if !check_files(&args[2..])? {
+            std::process::exit(1);
+        }
+        return Ok(());
+    }
     let stdin = io::stdin();
     let mut input = stdin.lock();
 

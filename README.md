@@ -146,6 +146,25 @@ python3 -m http.server -d web 8000  # then open http://localhost:8000
 Add `?example=lane-test` to the address to open a particular example, and
 `&run` to run it straight away.
 
+## In your editor
+
+`mouse --check program.mouse` reads a program without running it and reports
+what is wrong: unbalanced brackets and loops, calls with no closing `;`,
+macros that are called but not defined, text the interpreter would ignore.
+
+```bash
+mouse --check examples/*.mouse
+```
+
+The same analysis drives a language server, `mouse-lsp` in `lsp/`, with
+hover help for every instruction, go to definition, references, rename,
+completion and more. `editors/vscode` is a Visual Studio Code extension that
+bundles the server and the interpreter as WebAssembly and adds syntax
+highlighting and a run button. See [`editors/README.md`](editors/README.md).
+
+The interpreter itself still has no dependencies. The language server is a
+separate crate in the same workspace and uses `serde_json`.
+
 ## Tutorial and dataset
 
 `tutorial/` is a 14-chapter tutorial, from hello world to macros and
@@ -163,5 +182,11 @@ cargo test
 ```
 
 The unit tests cover each operator, the examples in the text of the article,
-each of Lane's corrections, and the error messages. The integration test runs
-every example program and compares its output.
+each of Lane's corrections, the error messages, and the static analysis. The
+integration tests run every example program and compare its output, and check
+that every example passes `mouse --check`.
+
+```bash
+cargo test -p mouse-lsp                  # the language server
+cd editors/vscode && npm install && npm run build && npm test
+```

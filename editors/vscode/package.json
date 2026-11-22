@@ -1,0 +1,85 @@
+{
+  "name": "mouse-language",
+  "displayName": "Mouse",
+  "description": "Syntax highlighting, a language server and a run button for Mouse, Peter Grogono's 1979 programming language.",
+  "version": "0.1.0",
+  "publisher": "chrishayuk",
+  "private": true,
+  "repository": { "type": "git", "url": "https://github.com/chrishayuk/mouse-interpreter" },
+  "engines": { "vscode": "^1.85.0" },
+  "categories": ["Programming Languages", "Linters"],
+  "keywords": ["mouse", "esoteric", "retro", "byte", "language server"],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "languages": [
+      {
+        "id": "mouse",
+        "aliases": ["Mouse", "mouse"],
+        "extensions": [".mouse"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      { "language": "mouse", "scopeName": "source.mouse", "path": "./syntaxes/mouse.tmLanguage.json" }
+    ],
+    "commands": [
+      { "command": "mouse.run", "title": "Run Program", "category": "Mouse", "icon": "$(play)" },
+      { "command": "mouse.restartServer", "title": "Restart Language Server", "category": "Mouse" }
+    ],
+    "menus": {
+      "editor/title/run": [{ "command": "mouse.run", "when": "resourceLangId == mouse" }],
+      "commandPalette": [
+        { "command": "mouse.run", "when": "editorLangId == mouse" },
+        { "command": "mouse.restartServer", "when": "editorLangId == mouse" }
+      ]
+    },
+    "keybindings": [
+      { "command": "mouse.run", "key": "ctrl+enter", "mac": "cmd+enter", "when": "editorTextFocus && editorLangId == mouse" }
+    ],
+    "taskDefinitions": [{ "type": "mouse" }],
+    "configuration": {
+      "title": "Mouse",
+      "properties": {
+        "mouse.server.path": {
+          "type": "string",
+          "default": "",
+          "description": "Path to a mouse-lsp program to use as the language server. Leave empty to use the one built into the extension."
+        },
+        "mouse.interpreter.path": {
+          "type": "string",
+          "default": "",
+          "description": "Path to a Mouse interpreter to run programs with. Leave empty to use the one built into the extension."
+        },
+        "mouse.trace.server": {
+          "type": "string",
+          "enum": ["off", "messages", "verbose"],
+          "default": "off",
+          "description": "Log the messages exchanged with the language server."
+        }
+      }
+    },
+    "configurationDefaults": {
+      "[mouse]": {
+        "editor.semanticHighlighting.enabled": true,
+        "editor.wordBasedSuggestions": "off"
+      }
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:vscode": "node test/vscode/run.mjs",
+    "package": "node build.mjs && vsce package --no-dependencies --skip-license"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.0",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.1.0"
+  }
+}
