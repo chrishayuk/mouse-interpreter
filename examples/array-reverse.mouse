@@ -1,12 +1,18 @@
 ' Any letter can be used as an array: the address B + I is element I.
 ' Read numbers until a negative one, then print them backwards.
-' This is Grogono's program, with the 25-element limit check.
+' This is Grogono's program (BYTE, July 1979, p. 204), with its limit check,
+' two corrections and some spacing in the output:
+'   - the article reads with "B A. + . ? =", one period too many, which
+'     stores at address 0 instead of in the array (a slip); it is
+'     "B A. + ? =" here;
+'   - the article tests "A. 25 -", which lets a 26th number in, one past Z
+'     (a slip: the text says no more than 25); it is "A. 24 -" here.
 "Enter numbers, ending with a negative one:!"
 A 0 =
 ( B A. + ? =
   B A. + . 1 + ^                           ' stop on a negative number
   A A. 1 + =
-  A. 25 - [ "ARRAY FULL!" 0 ^ ] )
+  A. 24 - [ "ARRAY FULL!" 0 ^ ] )
 ( A. ^
   A A. 1 - =
   B A. + . ! " " )

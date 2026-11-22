@@ -1,12 +1,25 @@
-' Listing 5 of Grogono's article: read an array, print it, bubble sort it
-' and print it again. The main program uses no variables, so P can use
-' all 26 of them as the array, reached through the address of A.
+' Listing 5 of Grogono's article (BYTE, July 1979, p. 208): read an array,
+' print it, bubble sort it and print it again. The main program uses no
+' variables, so P can use all 26 of them as the array, reached through the
+' address of A.
 '   F is a FOR loop:  for %A := %B to %C do %D  (counting down if %B > %C)
 '   E exchanges two variables given their addresses
+' Transcribed from the scan: the only changes are ^ for the printed up
+' arrow, straight quotes, spacing and line breaks outside strings, and these
+' comment lines. Strings are as printed (spaces inside strings are read
+' from proportional type, so their exact count is approximate).
+'
+' A slip in the original: asked for one number (or none), the program
+' fails. B runs its outer loop "for I := 1 to N-1", and with one number
+' that is "for I := 1 to 0", which F counts DOWN instead of skipping, so
+' the inner loop looks at element -1, address 0. This interpreter stops
+' with "invalid variable address 0"; listing 6 would index DATA[0], outside
+' its bounds. The program is left as printed; the same program with the
+' slip fixed is grogono-bubble-sort-corrected.mouse.
 "BUBBLE SORT!" #P,A;
 
-$P "HOW MANY NUMBERS? " N ? = N. 26 - [ "TOO MANY!" @ ]
-   "!ENTER " N. ! " NUMBERS!" N N. 1 - =
+$P "HOW MANY NUMBERS?" N ? = N. 26 - [ "TOO MANY!" @ ]
+   "ENTER " N. ! " NUMBERS!" N N. 1 - =
    #F,M,0,N., %A M. + ? =;
    "INPUT ARRAY!"  #F,M,0,N., %A M. + . ! " "; "!"
    #B,%A,0,N.;

@@ -2,9 +2,12 @@
 //!
 //! This is the language Peter Grogono described in "Mouse: A Language for
 //! Microcomputers", BYTE, July 1979, pp. 198-220, and follows the Pascal
-//! interpreter printed there as listing 6. It includes the four fixes from
+//! interpreter printed there as listing 6. It includes the corrections from
 //! Tom Lane's "Comment and Correction for Mouse", BYTE, June 1980, all of
-//! which Grogono accepted in his reply:
+//! which Grogono accepted in his reply. Lane first corrects a typographical
+//! error, line 42 printed as `CAL := CAL = 1` for `CAL := CAL - 1` (here the
+//! calculation stack is a Vec, so the line has no direct counterpart), and
+//! then makes four fixes to the logic:
 //!
 //! 1. A PARAM frame *increments* PARBAL when searching for the macro call a
 //!    formal parameter belongs to (line 176 was misprinted with a minus).
@@ -14,8 +17,9 @@
 //! 4. Local variables are allocated from LASTUSED, not OFFSET, so a macro
 //!    called from inside an actual parameter gets storage of its own.
 //!
-//! See README.md for the places where this interpreter goes beyond the
-//! article (comments, error reporting, no fixed array sizes).
+//! See README.md for the places where this interpreter departs from listing
+//! 6 (comments, a loader that ignores `$` inside strings, error reporting,
+//! larger storage), each labelled by kind.
 
 mod analysis;
 
@@ -665,7 +669,8 @@ mod tests {
 
     #[test]
     fn addresses_start_at_one() {
-        assert_eq!(run("A ! \" \" T ! $$"), "1 20");
+        // As printed on p. 199; the numbers are printed with nothing between.
+        assert_eq!(run("A! T! $$"), "120");
     }
 
     #[test]
@@ -723,6 +728,8 @@ mod tests {
 
     #[test]
     fn lane_skip_ignores_brackets_in_strings() {
+        // Lane's fragment is `A.[ "PRINT A BRACKET ] HERE" ]` with A <= 0;
+        // here a literal 0 stands for A. and "ok" shows that running resumes.
         assert_eq!(run("0 [ \"PRINT A BRACKET ] HERE\" ] \"ok\" $$"), "ok");
         assert_eq!(run("#U,\"a;b\"; \"ok\" $$"), "ok");
     }
@@ -744,7 +751,84 @@ mod tests {
         assert_eq!(run(src), "1");
     }
 
+    // ---- Slips in the article's own programs ----
+
+    const BUBBLE_SORT: &str = include_str!("../examples/grogono-bubble-sort.mouse");
+    const BUBBLE_SORT_CORRECTED: &str =
+        include_str!("../examples/grogono-bubble-sort-corrected.mouse");
+
+    #[test]
+    fn article_bubble_sort_fails_on_one_number() {
+        // Listing 5 as printed: with one number, B's outer FOR runs from 1
+        // down to 0 and the inner one reads element -1, address 0.
+        let err = run_with(BUBBLE_SORT, "1\n42\n").unwrap_err().to_string();
+        assert!(err.contains("invalid variable address 0"), "{err}");
+        assert_eq!(
+            run_with(BUBBLE_SORT, "3\n3 1 2\n").unwrap(),
+            "BUBBLE SORT\nHOW MANY NUMBERS?ENTER 3 NUMBERS\nINPUT ARRAY\n3 1 2 \nSORTED ARRAY\n1 2 3 \n"
+        );
+    }
+
+    #[test]
+    fn corrected_bubble_sort_handles_one_number_and_none() {
+        let out = run_with(BUBBLE_SORT_CORRECTED, "1\n42\n").unwrap();
+        assert!(out.ends_with("INPUT ARRAY\n42 \nSORTED ARRAY\n42 \n"), "{out}");
+        let out = run_with(BUBBLE_SORT_CORRECTED, "0\n").unwrap();
+        assert!(out.ends_with("TOO FEW\n"), "{out}");
+        let out = run_with(BUBBLE_SORT_CORRECTED, "4\n9 -2 7 0\n").unwrap();
+        assert!(out.ends_with("SORTED ARRAY\n-2 0 7 9 \n"), "{out}");
+    }
+
+    /// The bounded array program from p. 204, with the article's own period
+    /// removed from the read (see `article_array_program_has_one_period_too_many`)
+    /// and with the given limit.
+    fn bounded_array_program(limit: u32) -> String {
+        format!(
+            "A0= ( BA.+?= BA.+.1+^ AA.1+= A.{limit}-[ \"ARRAY FULL!\" 0^ ] ) \
+             ( A.^ AA.1-= BA.+.! \" \" ) $$"
+        )
+    }
+
+    #[test]
+    fn article_array_bound_lets_a_26th_number_in() {
+        // The text promises no more than 25 numbers (B to Z), but A.25- only
+        // stops the loop after a 26th has been stored at address 27.
+        let input: String = (1..=30).map(|n| format!("{n} ")).collect();
+        let out = run_with(&bounded_array_program(25), &input).unwrap();
+        assert!(out.starts_with("ARRAY FULL\n26 25 "), "{out}");
+        let out = run_with(&bounded_array_program(24), &input).unwrap();
+        assert!(out.starts_with("ARRAY FULL\n25 24 "), "{out}");
+    }
+
+    #[test]
+    fn article_array_program_has_one_period_too_many() {
+        // Both array programs on p. 204 read with `BA.+.?=`: the second
+        // period fetches B[A] (zero) and the number is stored at address 0.
+        let printed = "A0= ( BA.+.?= BA.+.1+^ AA.1+= ) ( A.^ AA.1-= BA.+.! ) $$";
+        let err = run_with(printed, "3 1 -1\n").unwrap_err().to_string();
+        assert!(err.contains("invalid variable address 0"), "{err}");
+    }
+
     // ---- Beyond the article ----
+
+    #[test]
+    fn loader_ignores_dollar_signs_inside_strings() {
+        // Ours: listing 6's loader (lines 79-83) would take `$A` in the
+        // string as a definition of A and stop loading at a `$$` in a string.
+        assert_eq!(run("#A; \"$A 7!@\" $$"), "$A 7\n@");
+        assert_eq!(run("\"a$$b\" $$"), "a$$b");
+    }
+
+    #[test]
+    fn brackets_are_only_checked_when_execution_reaches_them() {
+        // Running does not check structure in advance, as in listing 6; an
+        // unclosed `[` that is entered, or a `(` left open, ends silently at
+        // the `$$`. `mouse --check` finds them.
+        for src in ["1 [ $$", "( $$", "1 ^ $$"] {
+            assert_eq!(run(src), "", "{src}");
+            assert!(analysis::analyse(src).has_errors(), "{src}");
+        }
+    }
 
     #[test]
     fn return_from_inside_a_loop() {

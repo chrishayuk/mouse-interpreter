@@ -1,6 +1,12 @@
-' From "Mouse: A Language for Microcomputers", Peter Grogono, BYTE July 1979.
-' Asks for numbers and prints their factorials until given zero or less.
-( "ENTER A NUMBER " M ? = M. ^
+' From the text of Grogono's article (BYTE, July 1979, p. 203). Asks for
+' numbers and prints their factorials until given zero or less.
+' Transcribed from the scan: the only changes are ^ for the printed up
+' arrow, straight quotes, spacing and line breaks outside strings, and these
+' comment lines. Strings are as printed (spaces inside strings are read
+' from proportional type, so their exact count is approximate).
+' The article's sample dialogue shows the number typed after the prompt;
+' the input is not echoed, so here the prompt and the answer share a line.
+( "ENTER A NUMBER" M ? = M. ^
   N M. = 1 ( N. ^ N. * N N. 1 - = )
   "FACTORIAL (" M. ! ") = " ! "!" )
 $$

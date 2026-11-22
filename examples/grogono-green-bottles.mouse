@@ -1,8 +1,17 @@
-' Listing 3 of Grogono's article: a song, sung by a recursive macro.
-' (A leading space has been added to W; the printed listing ran
-' "BOTTLES" and "STANDING" together.)
-( "HOW MANY VERSES? " S ? = S. ^
-  "!" 10 S. - [ #V,S. 1 +; ] )
+' Listing 3 of Grogono's article (BYTE, July 1979, p. 208): a song, sung
+' by a recursive macro.
+' Transcribed from the scan: the only changes are ^ for the printed up
+' arrow, straight quotes, spacing and line breaks outside strings, and these
+' comment lines. Strings are as printed (spaces inside strings are read
+' from proportional type, so their exact count is approximate).
+' As printed, W has no leading space, so the song prints
+' "GREEN BOTTLESSTANDING ON THE WALL". That is presumably not what was
+' meant (an interpretation, not a fault in the program: it runs exactly as
+' written). "$W " STANDING ON THE WALL" @" gives the intended words.
+' The prompt is followed by no new line, so the first verse starts on the
+' prompt's line.
+( "HOW MANY VERSES?"
+  S ? = S. ^ 10 S. - [ #V,S. 1 +; ] )
 
 $V %A 1 - [ #N,%A; #B; #W; ",!"
             #N,%A; #B; ";!" #F; ",!"
@@ -10,7 +19,7 @@ $V %A 1 - [ #N,%A; #B; #W; ",!"
             #V,%A 1 -; ] @
 
 $B " GREEN BOTTLES" @
-$W " STANDING ON THE WALL" @
+$W "STANDING ON THE WALL" @
 $F "IF ONE OF THOSE BOTTLES SHOULD HAPPEN TO FALL" @
 
 $N %A 9 - [ "NINE"  @ ]

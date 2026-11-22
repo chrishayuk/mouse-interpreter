@@ -1,8 +1,14 @@
-' Listing 1 of Grogono's article: square and triangular numbers computed
-' by two mutually recursive macros.
+' Listing 1 of Grogono's article (BYTE, July 1979, p. 206): square and
+' triangular numbers computed by two mutually recursive macros.
 '   S(n) = T(n) + T(n-1),  T(n) = (S(n-1) + 3n - 1) / 2,  S(1) = T(1) = 1
-"SQUARE AND TRIANGULAR NUMBERS!"
-( "ENTER A NUMBER " N ? = N. ^
+' Transcribed from the scan: the only changes are ^ for the printed up
+' arrow, straight quotes, spacing and line breaks outside strings, and these
+' comment lines. Strings are as printed (spaces inside strings are read
+' from proportional type, so their exact count is approximate).
+' The title has no "!" and the prompt no trailing space, so the title,
+' the prompt and the answer run together on one line of output.
+"SQUARE AND TRIANGULAR NUMBERS"
+( "ENTER A NUMBER" N ? = N. ^
   "S(" N. ! ") = " #S,N.; !
   "   T(" N. ! ") = " #T,N.; ! "!" )
 

@@ -1,6 +1,13 @@
-' Listing 4 of Grogono's article: the Towers of Hanoi. The peg names are
-' strings passed as parameters and handed on through the recursion.
-"TOWERS OF HANOI!HOW MANY DISKS? " D ? = "!"
+' Listing 4 of Grogono's article (BYTE, July 1979, p. 208): the Towers of
+' Hanoi. The peg names are strings passed as parameters and handed on
+' through the recursion.
+' Transcribed from the scan: the only changes are ^ for the printed up
+' arrow, straight quotes, spacing and line breaks outside strings, and these
+' comment lines. Strings are as printed (spaces inside strings are read
+' from proportional type, so their exact count is approximate).
+' The prompt is followed by no new line, so the first move is printed on
+' the prompt's line.
+"TOWERS OF HANOI!HOW MANY DISKS?" D ? =
 D. [ #H,D.,"LEFT","RIGHT","CENTER"; ]
 
 $H %A [ #H,%A 1 -,%B,%D,%C;

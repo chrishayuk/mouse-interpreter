@@ -1,4 +1,5 @@
-' From Grogono's article: missing parameters are empty, extra ones are
+' From Grogono's article (BYTE, July 1979, p. 206), with spacing and these
+' comments added; its printed output is grogono-parameters.out. Missing parameters are empty, extra ones are
 ' ignored, and a call to an undefined macro (U) does nothing.
 #T; #T,"A"; #T,"A","B"; #T,"A","B","C"; #U;
 

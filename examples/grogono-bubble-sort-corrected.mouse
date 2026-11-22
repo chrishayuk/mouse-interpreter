@@ -1,0 +1,28 @@
+' Listing 5 of Grogono's article with its slip corrected. As printed
+' (grogono-bubble-sort.mouse) the program fails when asked for fewer than
+' two numbers, because F counts down when its range is empty. Two lines
+' are added, marked "added":
+'   - fewer than one number is refused, as more than 26 already is;
+'   - the sort is called only when there are at least two numbers.
+' Everything else is as printed.
+"BUBBLE SORT!" #P,A;
+
+$P "HOW MANY NUMBERS?" N ? = N. 26 - [ "TOO MANY!" @ ]
+   1 N. - [ "TOO FEW!" @ ]                                   ' added
+   "ENTER " N. ! " NUMBERS!" N N. 1 - =
+   #F,M,0,N., %A M. + ? =;
+   "INPUT ARRAY!"  #F,M,0,N., %A M. + . ! " "; "!"
+   N. [ #B,%A,0,N.; ]                                        ' added
+   "SORTED ARRAY!" #F,M,0,N., %A M. + . ! " "; "!" @
+
+$B #F,I,%B 1 +,%C,
+     #F,J,%C,I.,
+       %A J. 1 - + .  %A J. + .  -
+         [ #E,%A J. +,%A J. 1 - +; ] ; ; @
+
+$F %A %B = %C %A. - 1 +
+   [ ( %C %A. - 1 + ^ %D %A %A. 1 + = ) @ ]
+     ( %A. %C - 1 + ^ %D %A %A. 1 - = ) @
+
+$E %A %B. %B %A. = = @
+$$

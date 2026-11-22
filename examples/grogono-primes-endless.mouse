@@ -1,5 +1,6 @@
-' Listing 2 of Grogono's article, as printed: it prints prime numbers and
-' never stops. Press Ctrl-C to end it. See primes.mouse for a version
+' Listing 2 of Grogono's article (BYTE, July 1979, p. 206): it prints prime
+' numbers and never stops. Changed only by ^ for the printed up arrow,
+' straight quotes, spacing outside strings and these comments. Press Ctrl-C to end it. See primes.mouse for a version
 ' with a limit.
 "PRIME NUMBERS!" N 1 = ( N N. 1 + = #P,N.; )
 
