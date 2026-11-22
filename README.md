@@ -8,7 +8,45 @@ published in BYTE in July 1979, written in Rust with no dependencies.
 $$
 ```
 
+## Install
+
+You need [Rust](https://rustup.rs). To install the interpreter and the
+language server from this repository:
+
+```bash
+cargo install --git https://github.com/chrishayuk/mouse-interpreter mouse-interpreter mouse-lsp
+```
+
+That puts `mouse-interpreter` and `mouse-lsp` in `~/.cargo/bin`. Then:
+
+```bash
+echo '"Hello, world!" $$' | mouse-interpreter
+```
+
+For Visual Studio Code, build and install the extension. It needs
+[Node](https://nodejs.org) and Rust's WebAssembly target:
+
+```bash
+rustup target add wasm32-wasip1
+git clone https://github.com/chrishayuk/mouse-interpreter
+cd mouse-interpreter/editors/vscode
+npm install
+npm run package
+code --install-extension mouse-language-0.1.0.vsix
+```
+
+Open any `.mouse` file and you get highlighting, hover help, problems as
+you type, and a run button. The extension carries its own copy of the
+interpreter and language server, so it works without the `cargo install`
+above. For Neovim, Helix and other editors see
+[`editors/README.md`](editors/README.md).
+
+Or try Mouse with nothing installed, in the
+[playground](https://chrishayuk.com/demos/mouse).
+
 ## Build and run
+
+To work on the interpreter itself, clone the repository and:
 
 ```bash
 cargo build --release
@@ -148,12 +186,12 @@ Add `?example=lane-test` to the address to open a particular example, and
 
 ## In your editor
 
-`mouse --check program.mouse` reads a program without running it and reports
+`mouse-interpreter --check program.mouse` reads a program without running it and reports
 what is wrong: unbalanced brackets and loops, calls with no closing `;`,
 macros that are called but not defined, text the interpreter would ignore.
 
 ```bash
-mouse --check examples/*.mouse
+mouse-interpreter --check examples/*.mouse
 ```
 
 The same analysis drives a language server, `mouse-lsp` in `lsp/`, with
@@ -184,7 +222,7 @@ cargo test
 The unit tests cover each operator, the examples in the text of the article,
 each of Lane's corrections, the error messages, and the static analysis. The
 integration tests run every example program and compare its output, and check
-that every example passes `mouse --check`.
+that every example passes `--check`.
 
 ```bash
 cargo test -p mouse-lsp                  # the language server
