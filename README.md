@@ -42,7 +42,7 @@ An error stops the program with a message and exit status 1.
 | `%A`-`%Z` | Run the first to twenty-sixth actual parameter |
 | `$$` | End of program |
 
-A full tutorial is in `../mouse-tutorial-ai/markdown`.
+A full tutorial is in [`tutorial/`](tutorial/01-introduction.md).
 
 ## Fidelity to the original
 
@@ -128,6 +128,16 @@ Programs from Grogono's article, transcribed from the printed listings:
 | `grogono-parameters.mouse` | Missing and extra parameters, and an undefined macro |
 | `grogono-primes-endless.mouse` | Listing 2 as printed: primes for ever (not run by the tests) |
 | `grogono-squares-triangles.mouse` | Listing 1: two mutually recursive macros |
+
+## Tutorial and dataset
+
+`tutorial/` is a 14-chapter tutorial, from hello world to macros and
+recursion. Every program in it is followed by its output, and
+`python3 tutorial/check_tutorial.py` runs them all and compares.
+
+`tutorial/dataset/mouse.jsonl` is a small chat-format training set about
+Mouse. `python3 tutorial/build_dataset.py` rebuilds it; every output in an
+answer comes from running the program.
 
 ## Tests
 
