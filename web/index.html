@@ -28,13 +28,36 @@
   button:disabled { opacity: .35; cursor: default; }
   .err { color: var(--err); }
   #status { font: 12px ui-monospace, monospace; opacity: .6; }
+  /* The editor that replaces the program box when it can be loaded (editor.js). */
+  .mouse-editor { height: 340px; border: 1px solid var(--rule); resize: vertical; overflow: hidden; }
+  .mouse-editor .cm-editor { height: 100%; }
+  .mouse-editor .cm-editor.cm-focused { outline: 1px solid var(--accent); }
+  .mouse-editor .cm-scroller { font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .mouse-editor .cm-content { padding: 12px; caret-color: currentColor; }
+  .mouse-editor .cm-line { padding: 0; }
+  .mouse-editor .cm-cursor { border-left-color: currentColor; }
+  .mouse-token-comment { color: color-mix(in srgb, currentColor 55%, transparent); font-style: italic; }
+  .mouse-token-string { color: color-mix(in srgb, #3f8f4f 70%, currentColor); }
+  .mouse-token-number { color: color-mix(in srgb, #2f7fb8 70%, currentColor); }
+  .mouse-token-function { color: color-mix(in srgb, #c96a14 80%, currentColor); font-weight: 600; }
+  .mouse-token-parameter { color: color-mix(in srgb, #a0489a 75%, currentColor); }
+  .mouse-token-keyword { color: color-mix(in srgb, #b8323a 70%, currentColor); }
+  .mouse-token-operator { color: color-mix(in srgb, currentColor 75%, transparent); }
+  .cm-tooltip.cm-tooltip-hover, .cm-tooltip.cm-tooltip-autocomplete, .cm-tooltip.cm-tooltip-lint { border: 1px solid #22251f55; background: #fbf9f3; color: #22251f; box-shadow: 0 6px 24px #0003; max-width: min(420px, 86vw); }
+  .mouse-hover { padding: 10px 14px; font: 13px/1.55 system-ui, sans-serif; }
+  .mouse-hover p { max-width: none; opacity: 1; margin: 0 0 6px; }
+  .mouse-hover p:last-child { margin-bottom: 0; }
+  .mouse-hover code, .mouse-hover pre { font: 12px/1.5 ui-monospace, monospace; background: #22251f14; padding: 1px 4px; }
+  .mouse-hover pre { width: auto; height: auto; border: 0; margin: 0 0 6px; padding: 6px 8px; }
+  .cm-tooltip-autocomplete ul li[aria-selected] { background: #22251f !important; color: #fbf9f3 !important; }
 </style>
 </head>
 <body>
 <main>
   <h1>Mouse</h1>
   <p>Peter Grogono's tiny language from BYTE, July 1979, running in your browser. The interpreter is the
-     same Rust program as the command line, compiled to WebAssembly.
+     same Rust program as the command line, compiled to WebAssembly. Hover over any character to see
+     what it does.
      <a href="https://github.com/chrishayuk/mouse-interpreter">Source and tutorial</a>.</p>
   <div class="bar">
     <select id="examples" aria-label="Example programs"></select>
@@ -57,14 +80,17 @@
 </main>
 <script type="module">
 const $ = (id) => document.getElementById(id);
+import { upgrade } from "./editor.js";
 const examples = await (await fetch("examples.json")).json();
 let worker = null;
+let editor = null; // the language-aware editor, once it has loaded
 
 for (const example of examples) $("examples").add(new Option(example.name, example.name));
 function load(name) {
   const example = examples.find((e) => e.name === name) ?? examples[0];
   $("examples").value = example.name;
   $("program").value = example.program;
+  editor?.set(example.program);
   $("input").value = example.input;
   $("output").textContent = "";
   $("status").textContent = example.endless ? "this one never stops: use Stop" : "";
@@ -103,6 +129,9 @@ $("run").onclick = () => {
 };
 $("stop").onclick = () => finish("stopped");
 if (new URLSearchParams(location.search).has("run")) $("run").click();
+// Colours, problems and hover help, if the editor can be fetched; otherwise
+// the plain box above keeps working.
+upgrade($("program"), { onRun: () => $("run").click() }).then((made) => { editor = made; });
 $("program").addEventListener("keydown", (event) => {
   if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) $("run").click();
 });

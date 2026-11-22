@@ -174,6 +174,9 @@ is a small host that supplies standard input and output, so no other library
 is needed. Each run happens in a worker, which is how an endless program can
 be stopped.
 
+`web/editor.js` turns the program box into an editor with colours, problems
+as you type, hover help and completion. It loads CodeMirror from a CDN, so
+that part needs a network connection; without one the plain box still works.
 `web/lsp-worker.js` runs the language server in a page the same way: it is
 the WASI build of `mouse-lsp`, given one program and a list of questions per
 run. The playground at chrishayuk.com uses it for colours, problems, hover
