@@ -155,6 +155,9 @@ In Listing 3, `$W "STANDING ON THE WALL"` has no leading space, so the song
 prints `BOTTLESSTANDING`; that is presumably unintended (an interpretation),
 but it is left as printed.
 
+An independent review of these claims, and what was done about each
+finding, is in [`docs/independent-review.md`](docs/independent-review.md).
+
 The later dialect from Grogono's 1983 book (`:` to store, `<` `=` `>`, `\`,
 `1%` parameters) is not implemented.
 
