@@ -13,7 +13,7 @@ mod analysis;
 
 use analysis::{analyse, Analysis, Kind, Severity, Token};
 use serde_json::{json, Value};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::io::{self, BufRead, Write};
 
 const SEMANTIC_TYPES: &[&str] = &["comment", "string", "number", "variable", "function", "parameter", "operator", "keyword"];
@@ -136,14 +136,14 @@ fn signature(letter: u8, arity: usize) -> String {
 }
 
 struct Server {
-    docs: HashMap<String, Doc>,
+    docs: BTreeMap<String, Doc>,
     shutdown: bool,
     exit: bool,
 }
 
 impl Server {
     fn new() -> Self {
-        Server { docs: HashMap::new(), shutdown: false, exit: false }
+        Server { docs: BTreeMap::new(), shutdown: false, exit: false }
     }
 
     /// Handles one incoming message and returns the messages to send back.

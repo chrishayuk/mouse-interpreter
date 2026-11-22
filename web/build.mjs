@@ -1,12 +1,14 @@
 // Builds the files the playground needs:  node web/build.mjs
 //   web/mouse.wasm     the interpreter, compiled for WASI
+//   web/mouse-lsp.wasm the language server, compiled for WASI
 //   web/examples.json  the example programs, with their input
 import { execSync } from "node:child_process";
 import { copyFileSync, existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 
 const root = new URL("..", import.meta.url).pathname;
-execSync("cargo build --release --target wasm32-wasip1", { cwd: root, stdio: "inherit" });
+execSync("cargo build --release --target wasm32-wasip1 -p mouse-interpreter -p mouse-lsp", { cwd: root, stdio: "inherit" });
 copyFileSync(`${root}target/wasm32-wasip1/release/mouse.wasm`, `${root}web/mouse.wasm`);
+copyFileSync(`${root}target/wasm32-wasip1/release/mouse-lsp.wasm`, `${root}web/mouse-lsp.wasm`);
 
 // Shown first, in this order; the rest follow alphabetically.
 const first = ["hello", "arithmetic", "variables", "countdown", "conditions", "fibonacci",
