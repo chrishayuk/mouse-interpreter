@@ -23,17 +23,16 @@ That puts `mouse` and `mouse-lsp` in `~/.cargo/bin`. Then:
 echo '"Hello, world!" $$' | mouse
 ```
 
-For Visual Studio Code, build and install the extension. It needs
-[Node](https://nodejs.org) and Rust's WebAssembly target:
+For Visual Studio Code, download `mouse-language-0.1.0.vsix` from the
+[latest release](https://github.com/chrishayuk/mouse-interpreter/releases/latest)
+and install it:
 
 ```bash
-rustup target add wasm32-wasip1
-git clone https://github.com/chrishayuk/mouse-interpreter
-cd mouse-interpreter/editors/vscode
-npm install
-npm run package
 code --install-extension mouse-language-0.1.0.vsix
 ```
+
+To build the extension yourself instead, see
+[`editors/vscode`](editors/vscode/README.md).
 
 Open any `.mouse` file and you get highlighting, hover help, problems as
 you type, and a run button. The extension carries its own copy of the
