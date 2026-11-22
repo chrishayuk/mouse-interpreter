@@ -1,0 +1,25 @@
+' Listing 5 of Grogono's article: read an array, print it, bubble sort it
+' and print it again. The main program uses no variables, so P can use
+' all 26 of them as the array, reached through the address of A.
+'   F is a FOR loop:  for %A := %B to %C do %D  (counting down if %B > %C)
+'   E exchanges two variables given their addresses
+"BUBBLE SORT!" #P,A;
+
+$P "HOW MANY NUMBERS? " N ? = N. 26 - [ "TOO MANY!" @ ]
+   "!ENTER " N. ! " NUMBERS!" N N. 1 - =
+   #F,M,0,N., %A M. + ? =;
+   "INPUT ARRAY!"  #F,M,0,N., %A M. + . ! " "; "!"
+   #B,%A,0,N.;
+   "SORTED ARRAY!" #F,M,0,N., %A M. + . ! " "; "!" @
+
+$B #F,I,%B 1 +,%C,
+     #F,J,%C,I.,
+       %A J. 1 - + .  %A J. + .  -
+         [ #E,%A J. +,%A J. 1 - +; ] ; ; @
+
+$F %A %B = %C %A. - 1 +
+   [ ( %C %A. - 1 + ^ %D %A %A. 1 + = ) @ ]
+     ( %A. %C - 1 + ^ %D %A %A. 1 - = ) @
+
+$E %A %B. %B %A. = = @
+$$

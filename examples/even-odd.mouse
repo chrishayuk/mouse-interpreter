@@ -1,0 +1,8 @@
+' There is no remainder operator: N mod D is  N  N D / D *  -
+( "Number (0 to stop): " N ? = N. ^
+  R N. N. 2 / 2 * - =                      ' R := N mod 2
+  N. !
+  R. [ " is odd!" ]
+  1 R. - [ " is even!" ] )
+"!"
+$$

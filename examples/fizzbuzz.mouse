@@ -1,0 +1,13 @@
+' FizzBuzz. Macro calls can be parameters of other macro calls.
+N 1 =
+( 31 N. - ^
+  P 0 =                                    ' P = 1 once something is printed
+  #Z,#M,N.,3;; [ "Fizz" P 1 = ]
+  #Z,#M,N.,5;; [ "Buzz" P 1 = ]
+  1 P. - [ N. ! ]
+  "!"
+  N N. 1 + = )
+
+$M %A %A %B / %B * - @                     ' M(a, b) = a mod b
+$Z %A 1 + [ 1 %A - [ 1 @ ] ] 0 @           ' Z(a) = 1 if a = 0, otherwise 0
+$$

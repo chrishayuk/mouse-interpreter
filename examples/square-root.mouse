@@ -1,0 +1,9 @@
+' Integer square root by Newton's method.
+( "Number (0 to stop): " N ? = N. ^
+  X N. =
+  ( Y X. N. X. / + 2 / =                   ' Y := (X + N / X) / 2
+    X. Y. - ^                              ' stop when it no longer shrinks
+    X Y. = )
+  "isqrt(" N. ! ") = " X. ! "!" )
+"!"
+$$

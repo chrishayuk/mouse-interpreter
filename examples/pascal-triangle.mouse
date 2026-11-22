@@ -1,0 +1,13 @@
+' Pascal's triangle. Each entry comes from the one before it:
+' C(n, k) = C(n, k - 1) * (n - k + 1) / k
+N 0 =
+( 9 N. - ^
+  S 8 N. - = ( S. ^ " " S S. 1 - = )       ' indent
+  C 1 = K 0 =
+  ( N. K. - 1 + ^
+    C. ! " "
+    K K. 1 + =
+    C C. N. K. - 1 + * K. / = )
+  "!"
+  N N. 1 + = )
+$$

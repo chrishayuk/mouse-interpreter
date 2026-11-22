@@ -1,0 +1,15 @@
+' Count, total, largest, smallest and mean of a list ending with 0.
+"Enter positive numbers, ending with 0:!"
+C 0 = S 0 = H 0 = L 0 =
+( N ? = N. ^
+  C C. 1 + =
+  S S. N. + =
+  N. H. - [ H N. = ]                       ' new largest
+  1 C. - 1 + [ L N. = ]                    ' first number is the smallest so far
+  L. N. - [ L N. = ] )                     ' new smallest
+C. [ "count:    " C. ! "!"
+     "total:    " S. ! "!"
+     "largest:  " H. ! "!"
+     "smallest: " L. ! "!"
+     "mean:     " S. C. / ! "!" ]
+$$

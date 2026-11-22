@@ -1,0 +1,9 @@
+' A triangle of stars.
+"Height: " H ? = "!"
+R 1 =
+( H. R. - 1 + ^
+  C R. =
+  ( C. ^ "*" C C. 1 - = )
+  "!"
+  R R. 1 + = )
+$$

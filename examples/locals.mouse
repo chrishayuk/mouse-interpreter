@@ -1,0 +1,13 @@
+' Every macro call has its own 26 variables. The main program's N is
+' untouched by the N inside X. This is Grogono's example; it prints 3.
+N 3 = #X; N. ! "!"
+
+' Tom Lane's test from BYTE, June 1980: B is called while A's parameter is
+' being evaluated and must not overwrite A's Q. The interpreter as first
+' published printed 33; the corrected one prints 1.
+#A,#B;; "!"
+
+$X N 99 = @
+$A Q 1 = %A Q. ! @
+$B Q 33 = @
+$$

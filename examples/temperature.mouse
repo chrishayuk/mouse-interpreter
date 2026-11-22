@@ -1,0 +1,9 @@
+' Fahrenheit to Celsius, in whole degrees.
+"  F    C!"
+F 0 =
+( 221 F. - ^
+  C F. 32 - 5 * 9 / =
+  100 F. - [ " " ] 10 F. - [ " " ]         ' right-align F in three columns
+  F. ! "   " C. ! "!"
+  F F. 20 + = )
+$$

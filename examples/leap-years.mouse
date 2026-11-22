@@ -1,0 +1,14 @@
+' Leap years: divisible by 4, except centuries, except every fourth century.
+( "Year (0 to stop): " Y ? = Y. ^
+  L 0 =
+  #Z,#M,Y.,4;;   [ L 1 = ]
+  #Z,#M,Y.,100;; [ L 0 = ]
+  #Z,#M,Y.,400;; [ L 1 = ]
+  Y. !
+  L. [ " is a leap year!" ]
+  1 L. - [ " is not a leap year!" ] )
+"!"
+
+$M %A %A %B / %B * - @
+$Z %A 1 + [ 1 %A - [ 1 @ ] ] 0 @
+$$

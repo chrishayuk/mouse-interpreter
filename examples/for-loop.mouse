@@ -1,0 +1,11 @@
+' Grogono's FOR macro: #F,var,from,to,body; counts up or down.
+' The body is an actual parameter, so it is run in the caller's context.
+"Up:     " #F,I,1,10, I. ! " "; "!"
+"Down:   " #F,I,10,1, I. ! " "; "!"
+"Squares:" #F,I,1,8, " " I. I. * !; "!"
+"Nested: " #F,I,1,3, #F,J,1,3, I. ! J. ! " ";; "!"
+
+$F %A %B = %C %A. - 1 +
+   [ ( %C %A. - 1 + ^ %D %A %A. 1 + = ) @ ]
+     ( %A. %C - 1 + ^ %D %A %A. 1 - = ) @
+$$

@@ -1,0 +1,9 @@
+' Listing 4 of Grogono's article: the Towers of Hanoi. The peg names are
+' strings passed as parameters and handed on through the recursion.
+"TOWERS OF HANOI!HOW MANY DISKS? " D ? = "!"
+D. [ #H,D.,"LEFT","RIGHT","CENTER"; ]
+
+$H %A [ #H,%A 1 -,%B,%D,%C;
+        "MOVE " %B " TO " %C "!"
+        #H,%A 1 -,%D,%C,%B; ] @
+$$

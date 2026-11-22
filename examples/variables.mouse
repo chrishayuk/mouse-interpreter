@@ -1,0 +1,8 @@
+' A letter pushes the ADDRESS of a variable. Use . to fetch the value
+' and = to store one:  address value =
+X 17 =                     ' X := 17
+Y X. 2 * =                 ' Y := X * 2
+"X = " X. ! "!"
+"Y = " Y. ! "!"
+"The address of X is " X ! " and of Y is " Y ! "!"
+$$

@@ -1,0 +1,14 @@
+' Any letter can be used as an array: the address B + I is element I.
+' Read numbers until a negative one, then print them backwards.
+' This is Grogono's program, with the 25-element limit check.
+"Enter numbers, ending with a negative one:!"
+A 0 =
+( B A. + ? =
+  B A. + . 1 + ^                           ' stop on a negative number
+  A A. 1 + =
+  A. 25 - [ "ARRAY FULL!" 0 ^ ] )
+( A. ^
+  A A. 1 - =
+  B A. + . ! " " )
+"!"
+$$

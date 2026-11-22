@@ -1,0 +1,13 @@
+' Perfect numbers: equal to the sum of their proper divisors.
+N 2 =
+( 500 N. - ^
+  S 1 = D 2 =
+  ( N. 2 / D. - 1 + ^                      ' for D := 2 to N / 2
+    #Z,#M,N.,D.;; [ S S. D. + = ]
+    D D. 1 + = )
+  #Z,S. N. -; [ N. ! " is perfect!" ]
+  N N. 1 + = )
+
+$M %A %A %B / %B * - @
+$Z %A 1 + [ 1 %A - [ 1 @ ] ] 0 @
+$$

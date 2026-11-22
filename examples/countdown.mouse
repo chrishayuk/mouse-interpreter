@@ -1,0 +1,8 @@
+' A loop is ( ... ). The ^ operator pops a value and leaves the loop
+' when it is zero or negative.
+N 10 =
+( N. ^                     ' while N > 0
+  N. ! " "
+  N N. 1 - = )             ' N := N - 1
+"Lift off!!"
+$$

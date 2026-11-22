@@ -1,0 +1,8 @@
+' Print numbers in binary with a recursive macro: the high bits first,
+' then the last bit.
+( "Number (0 to stop): " N ? = N. ^
+  N. ! " = " #B,N.; " in binary!" )
+"!"
+
+$B %A [ #B,%A 2 /; %A %A 2 / 2 * - ! ] @
+$$

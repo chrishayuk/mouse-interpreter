@@ -1,0 +1,14 @@
+' Primes up to a limit, by trial division. Based on Grogono's listing 2.
+"Primes up to: " L ? = "!"
+N 2 =
+( L. N. - 1 + ^
+  #P,N.;
+  N N. 1 + = )
+"!"
+
+$P F 1 = N 1 =                             ' N = 1 while %A still looks prime
+   ( F F. 1 + =
+     %A F. F. * - 1 + ^                    ' stop once F * F > %A
+     %A F. / F. * %A - 1 + [ N 0 = 0 ^ ] ) ' F divides %A: not prime
+   N. [ %A ! " " ] @
+$$

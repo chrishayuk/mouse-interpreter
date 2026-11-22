@@ -1,0 +1,12 @@
+' Greatest common divisor by Euclid's algorithm.
+"First number: " A ? =
+"Second number: " B ? = "!"
+"gcd(" A. ! ", " B. ! ") = "
+( B. ^
+  T B. =
+  B #M,A.,B.; =                            ' B := A mod B
+  A T. = )
+A. ! "!"
+
+$M %A %A %B / %B * - @                     ' M(a, b) = a mod b
+$$

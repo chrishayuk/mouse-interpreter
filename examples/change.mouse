@@ -1,0 +1,8 @@
+' Make change with the fewest coins. A is passed by reference.
+"Amount in pence: " A ? = "!"
+#C,A,200; #C,A,100; #C,A,50; #C,A,20; #C,A,10; #C,A,5; #C,A,2; #C,A,1;
+
+$C N %A. %B / =                            ' N := how many of this coin
+   N. [ N. ! " x " %B ! "p!" ]
+   %A %A. N. %B * - = @                    ' take them off the amount
+$$

@@ -1,0 +1,9 @@
+' A condition is  value [ ... ]  and runs the bracket when value > 0.
+' Mouse only tests "greater than zero", so other tests are built from it.
+"Enter a number: " N ? = "!"
+N. [ "positive!" ]                         ' N > 0
+0 N. - [ "negative!" ]                     ' N < 0
+1 N. + [ 1 N. - [ "zero!" ] ]              ' N = 0  (N > -1 and N < 1)
+N. 9 - [ "bigger than nine!" ]             ' N > 9
+10 N. - [ "less than ten!" ]               ' N < 10
+$$

@@ -1,0 +1,6 @@
+' From "Mouse: A Language for Microcomputers", Peter Grogono, BYTE July 1979.
+' Asks for numbers and prints their factorials until given zero or less.
+( "ENTER A NUMBER " M ? = M. ^
+  N M. = 1 ( N. ^ N. * N N. 1 - = )
+  "FACTORIAL (" M. ! ") = " ! "!" )
+$$

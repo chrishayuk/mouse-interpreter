@@ -1,0 +1,8 @@
+' A macro that leaves a value on the stack is a function.
+"Three numbers: " A ? = B ? = C ? = "!"
+"largest:  " #X,#X,A.,B.;,C.; ! "!"
+"smallest: " #N,#N,A.,B.;,C.; ! "!"
+
+$X %A %B - [ %A @ ] %B @                   ' X(a, b) = the larger
+$N %B %A - [ %A @ ] %B @                   ' N(a, b) = the smaller
+$$

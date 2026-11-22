@@ -1,0 +1,13 @@
+' Take a number apart: digit sum, digit count and the digits reversed.
+"Number: " N ? = "!"
+S 0 = C 0 = R 0 =
+( N. ^
+  D N. N. 10 / 10 * - =                    ' D := last digit
+  S S. D. + =
+  C C. 1 + =
+  R R. 10 * D. + =
+  N N. 10 / = )
+"digits:   " C. ! "!"
+"sum:      " S. ! "!"
+"reversed: " R. ! "!"
+$$

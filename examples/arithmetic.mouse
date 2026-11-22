@@ -1,0 +1,9 @@
+' Postfix arithmetic: operands first, then the operator.
+"3 + 4       = " 3 4 + ! "!"
+"10 - 4      = " 10 4 - ! "!"
+"6 * 7       = " 6 7 * ! "!"
+"17 / 5      = " 17 5 / ! "!"          ' division truncates
+"(2 + 3) * 4 = " 2 3 + 4 * ! "!"
+"2 + 3 * 4   = " 2 3 4 * + ! "!"
+"-7          = " 0 7 - ! "!"           ' there is no unary minus
+$$

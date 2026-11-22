@@ -1,0 +1,6 @@
+' Grogono's trick: exchange two variables using the stack, no temporary.
+X 1 = Y 2 =
+"Before: X = " X. ! ", Y = " Y. ! "!"
+X Y. Y X. = =
+"After:  X = " X. ! ", Y = " Y. ! "!"
+$$

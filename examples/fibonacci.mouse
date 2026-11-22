@@ -1,0 +1,9 @@
+' The first N Fibonacci numbers.
+"How many terms? " N ? = "!"
+A 0 = B 1 =
+( N. ^
+  A. ! " "
+  T A. B. + =  A B. =  B T. =
+  N N. 1 - = )
+"!"
+$$

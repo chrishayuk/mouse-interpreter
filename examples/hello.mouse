@@ -1,0 +1,3 @@
+' Hello, world. Text between quotes is printed; ! inside quotes is a newline.
+"Hello, world!"
+$$

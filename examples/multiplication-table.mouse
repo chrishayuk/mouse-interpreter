@@ -1,0 +1,12 @@
+' Nested loops. Numbers are printed with no padding, so pad by hand.
+I 1 =
+( 10 I. - ^
+  J 1 =
+  ( 10 J. - ^
+    P I. J. * =
+    10 P. - [ " " ]                        ' one more space if P < 10
+    " " P. !
+    J J. 1 + = )
+  "!"
+  I I. 1 + = )
+$$

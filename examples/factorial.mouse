@@ -1,0 +1,11 @@
+' Factorial three ways: a loop, a loop inside a macro, and recursion.
+"N: " N ? = "!"
+F 1 = I N. =
+( I. ^ F F. I. * = I I. 1 - = )
+"loop:      " F. ! "!"
+"macro:     " #L,N.; ! "!"
+"recursive: " #F,N.; ! "!"
+
+$L N %A = 1 ( N. ^ N. * N N. 1 - = ) @
+$F %A [ %A #F,%A 1 -; * @ ] 1 @
+$$

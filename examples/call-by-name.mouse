@@ -1,0 +1,9 @@
+' An actual parameter is not evaluated when the macro is called. Its text
+' is run every time the formal parameter appears, in the caller's context.
+#T,"hello ";  "!"                          ' the string is printed three times
+"Two numbers: " #S,?; ! "!"                ' ? is read twice
+X 0 = #T,X X. 1 + =; "X = " X. ! "!"       ' the assignment happens three times
+
+$T %A %A %A @
+$S %A %A + @
+$$

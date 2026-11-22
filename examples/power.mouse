@@ -1,0 +1,9 @@
+' Fast exponentiation by squaring. T is local to each call of P.
+"Base: " B ? = "Exponent: " E ? = "!"
+B. ! "^" E. ! " = " #P,B.,E.; ! "!"
+
+$P %B [ T #P,%A,%B 2 /; =                  ' T := base ^ (exp / 2)
+        %B %B 2 / 2 * - [ T. T. * %A * @ ] ' odd exponent
+        T. T. * @ ]
+   1 @                                     ' anything ^ 0 = 1
+$$

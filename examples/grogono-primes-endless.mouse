@@ -1,0 +1,9 @@
+' Listing 2 of Grogono's article, as printed: it prints prime numbers and
+' never stops. Press Ctrl-C to end it. See primes.mouse for a version
+' with a limit.
+"PRIME NUMBERS!" N 1 = ( N N. 1 + = #P,N.; )
+
+$P F 1 = N 1 =
+   ( F F. 1 + = %A F. - ^ %A F. / F. * %A - 1 + [ N 0 = 0 ^ ] )
+   N. [ %A ! "!" ] @
+$$
