@@ -7,3 +7,4 @@
 !dist/extension.js
 !server/*.js
 !server/*.wasm
+!LICENSE
